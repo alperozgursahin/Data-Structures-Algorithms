@@ -1,6 +1,6 @@
 package LinkedList;
 
-public class MyLinkedList {
+public class MyDoublyLinkedList {
 
 	private Node head;
 	private Node tail;
@@ -10,11 +10,18 @@ public class MyLinkedList {
 		private int value;
 
 		private Node next;
+		private Node prev;
 
 		public Node(int value) {
+			this.value = value;
+		}
 
-			this.setValue(value);
+		public Node getPrev() {
+			return prev;
+		}
 
+		public void setPrev(Node prev) {
+			this.prev = prev;
 		}
 
 		public Node getNext() {
@@ -34,12 +41,11 @@ public class MyLinkedList {
 		}
 	}
 
-	public MyLinkedList(int value) {
+	public MyDoublyLinkedList(int value) {
 		Node newNode = new Node(value);
-		head = newNode;
-		tail = newNode;
-		length = 1;
-
+		setHead(newNode);
+		setTail(newNode);
+		setLength(1);
 	}
 
 	public void append(int value) {
@@ -47,35 +53,29 @@ public class MyLinkedList {
 		if (length == 0) {
 			head = newNode;
 			tail = newNode;
-
 		} else {
-			tail.setNext(newNode);
+			newNode.prev = tail;
+			tail.next = newNode;
 			tail = newNode;
 		}
-		length++;
 
+		length++;
 	}
 
 	public void removeLast() {
-		if (length <= 0) {
+		if (length == 0) {
 			throw new NullPointerException("There Is No Item In List");
 		} else if (length == 1) {
 			head = null;
 			tail = null;
 			length--;
 		} else {
-			Node temp = head;
-			Node pre = null;
-			while (temp.getNext() != null) {
-				pre = temp;
-				temp = temp.getNext();
-
-			}
-			tail = pre;
-			pre.setNext(null);
+			Node temp = tail.prev;
+			tail.prev = null;
+			temp.next = null;
+			tail = temp;
 			length--;
 		}
-
 	}
 
 	public void prepend(int value) {
@@ -84,63 +84,71 @@ public class MyLinkedList {
 			head = newNode;
 			tail = newNode;
 		} else {
-			newNode.setNext(head);
+			head.prev = newNode;
+			newNode.next = head;
 			head = newNode;
 		}
 		length++;
 	}
 
 	public void removeFirst() {
-		Node temp = head;
 		if (length == 0) {
 			throw new NullPointerException("There Is No Item In List");
-
-		} else {
-			head = head.getNext();
-			temp.setNext(null);
-			length--;
-		}
-		if (length == 0) {
+		} else if (length == 1) {
 			head = null;
 			tail = null;
+			length--;
+		} else {
+			Node temp = head;
+			head = head.next;
+			head.prev = null;
+			temp.next = null;
+			length--;
 		}
-
 	}
 
 	public Node get(int index) {
-		if (index < 0 || index >= length) {
-			throw new NullPointerException("Wrong Index Given");
-		}
-		Node temp = head;
-		for (int i = 0; i < index; i++) {
-			temp = temp.getNext();
+		Node temp = null;
+		if (index < 0 || index >= length)
+			return null;
+		if (index <= length / 2) {
+			temp = head;
+			for (int i = 0; i < index; i++) {
+				temp = temp.next;
+			}
+		} else {
+			temp = tail;
+			for (int i = length - 1; i > index; i--) {
+				temp = temp.prev;
+			}
 		}
 		return temp;
+	}
 
+	public void set(int index, int value) {
+		Node temp = get(index);
+		if (temp != null) {
+			temp.value = value;
+		}
 	}
 
 	public void insert(int index, int value) {
 		if (index < 0 || index > length) {
 			throw new NullPointerException("Wrong Index Given");
-		} else if (index == length) {
-			append(value);
 		} else if (index == 0) {
 			prepend(value);
+		} else if (index == length) {
+			append(value);
 		} else {
-			Node temp = get(index - 1); // previous node
 			Node newNode = new Node(value);
-			newNode.setNext(temp.getNext());
-			temp.setNext(newNode);
+			Node before = get(index - 1);
+			Node after = before.next;
+			newNode.prev = before;
+			newNode.next = after;
+			before.next = newNode;
+			after.prev = newNode;
 			length++;
-		}
-	}
 
-	public void set(int index, int value) {
-		if (index < 0 || index > length) {
-			throw new NullPointerException("Wrong Index Given");
-		} else {
-			Node temp = get(index);
-			temp.setValue(value);
 		}
 	}
 
@@ -152,43 +160,15 @@ public class MyLinkedList {
 		} else if (index == length - 1) {
 			removeLast();
 		} else {
-			Node temp = get(index);
-			Node pre = get(index - 1);
-			pre.setNext(temp.getNext());
-			temp.setNext(null);
+			Node current = get(index);
+			Node before = current.prev;
+			Node after = current.next;
+			current.next = null;
+			current.prev = null;
+			before.next = after;
+			after.prev = before;
 			length--;
 		}
-	}
-
-	public void reverseList() {
-		Node before = null;
-		Node current = head;
-		Node after = current.getNext();
-
-		head = tail;
-		tail = current;
-
-		current.setNext(null);
-
-		for (int i = 1; i < length; i++) {
-			before = current;
-			current = after;
-			after = after.getNext();
-			current.setNext(before);
-		}
-
-	}
-
-	public Node findMiddleNode() {
-		Node fastPointer = head;
-		Node slowPointer = head;
-
-		while (fastPointer != null && fastPointer.getNext() != null) {
-
-			slowPointer = slowPointer.getNext();
-			fastPointer = fastPointer.getNext().getNext();
-		}
-		return slowPointer;
 	}
 
 	public void printList() {

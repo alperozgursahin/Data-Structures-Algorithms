@@ -3,7 +3,7 @@ package LinkedList;
 public class Main {
 
 	public static void main(String[] args) {
-		DoublyLinkedList myList = new DoublyLinkedList(0);
+		MyDoublyLinkedList myList = new MyDoublyLinkedList(0);
 
 		myList.append(1);
 		myList.append(2);

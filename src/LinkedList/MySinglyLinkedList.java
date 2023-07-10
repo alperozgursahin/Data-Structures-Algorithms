@@ -191,6 +191,104 @@ public class MySinglyLinkedList {
 		return slowPointer;
 	}
 
+	public boolean hasLoop() {
+		Node slow = head;
+		Node fast = head;
+
+		while (fast != null && fast.next != null) {
+			slow = slow.next;
+			fast = fast.next.next;
+
+			if (slow == fast) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public Node findKthNodeFromEnd(int k) {
+		if (k >= length && k < 1)
+			return null;
+		if (head == null)
+			return null;
+		Node slow = head;
+		Node fast = head;
+
+		for (int i = 0; i < k; i++) {
+			fast = fast.next;
+		}
+
+		while (fast != null) {
+			slow = slow.next;
+			fast = fast.next;
+		}
+		return slow;
+	}
+
+	public void removeDuplicates() {
+		Node current = head;
+
+		while (current != null) {
+			Node runner = current;
+			while (runner.next != null) {
+				if (runner.next.value == current.value) {
+					runner.next = runner.next.next;
+					length--;
+				} else {
+					runner = runner.next;
+				}
+			}
+			current = current.next;
+
+		}
+	}
+
+	public void removeKthNodeFromEnd(int index) {
+		if (index > length || index <= 0)
+			throw new NullPointerException("Wrong Index Given");
+		else if (index == length)
+			removeFirst();
+		else if (index == 1)
+			removeLast();
+
+		else {
+			Node slow = head;
+			Node fast = head;
+
+			for (int i = 0; i < index; i++) {
+				fast = fast.next;
+			}
+
+			while (fast.next != null) {
+				slow = slow.next;
+				fast = fast.next;
+
+			}
+			slow.next = slow.next.next;
+			length--;
+		}
+
+	}
+
+	public void swapNodes(int k) {
+		Node slow = head;
+		Node fast = head;
+
+		for (int i = 0; i < k; i++) {
+			fast = fast.next;
+		}
+		Node firstNode = fast;
+
+		while (fast.next != null) {
+			slow = slow.next;
+			fast = fast.next;
+		}
+		int temp = firstNode.value;
+		firstNode.value = slow.value;
+		slow.value = temp;
+	}
+
 	public void printList() {
 		Node temp = head;
 		while (temp != null) {

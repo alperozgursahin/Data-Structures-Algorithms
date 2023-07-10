@@ -171,6 +171,88 @@ public class MyDoublyLinkedList {
 		}
 	}
 
+	public void swapFirstLastNodes() {
+		if (length < 2)
+			return;
+		else if (length == 2) {
+			tail.next = head;
+			head.prev = tail;
+			head.next = null;
+			tail.prev = null;
+			Node temp = tail;
+			tail = head;
+			head = temp;
+		} else {
+			Node prevTail = tail.prev;
+			Node temp = tail;
+			tail.next = head.next;
+			tail.next.prev = tail;
+			tail.prev = null;
+
+			prevTail.next = head;
+			head.prev = prevTail;
+			head.next = null;
+
+			tail = head;
+			head = temp;
+		}
+	}
+
+	public void swapFirstLastValues() {
+		if (length < 2)
+			return;
+		int temp = head.value;
+		head.value = tail.value;
+		tail.value = temp;
+	}
+
+	public void reverse() {
+		Node current = head;
+		Node temp = null;
+
+		while (current != null) {
+			temp = current.prev;
+			current.prev = current.next;
+			current.next = temp;
+			current = current.prev;
+		}
+
+		temp = head;
+		head = tail;
+		tail = temp;
+	}
+
+	public void swapPairs() {
+		Node dummy = new Node(0);
+		dummy.next = head;
+		Node prev = dummy;
+		Node secondNode = null;
+
+		while (head != null && head.next != null) {
+			Node firstNode = head;
+			secondNode = head.next;
+
+			prev.next = secondNode;
+			firstNode.next = secondNode.next;
+			secondNode.next = firstNode;
+
+			secondNode.prev = prev;
+			firstNode.prev = secondNode;
+			if (firstNode.next != null) {
+				firstNode.next.prev = firstNode;
+			}
+
+			head = firstNode.next;
+			prev = firstNode;
+		}
+
+		head = dummy.next;
+		if (head != null)
+			head.prev = null;
+		if (length % 2 == 0)
+			tail = secondNode.next;
+	}
+
 	public void printList() {
 		Node temp = head;
 		while (temp != null) {

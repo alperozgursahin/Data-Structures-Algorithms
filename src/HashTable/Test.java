@@ -1,5 +1,7 @@
 package HashTable;
 
+import java.util.List;
+
 public class Test {
 
 	public static void main(String[] args) {
@@ -10,6 +12,10 @@ public class Test {
 		table.set("nissan", 4);
 
 		System.out.println(table.keys());
+		
+		int[] nums = {1, 2, 3, 2, 1, 4, 5, 4};
+        List<Integer> duplicates = table.findDuplicates(nums);
+        System.out.println(duplicates); 
 
 	}
 

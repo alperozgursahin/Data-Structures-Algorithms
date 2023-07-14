@@ -1,6 +1,10 @@
 package HashTable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MyHashTable {
 
@@ -79,6 +83,95 @@ public class MyHashTable {
 			hash = (hash + asciiValue * 23) % dataMap.length;
 		}
 		return hash;
+	}
+
+	public List<Integer> findDuplicates(int[] nums) {
+
+		if (nums.length < 2)
+			return null;
+		List<Integer> duplicates = new ArrayList<>();
+		HashMap<Integer, Boolean> mymap = new HashMap<>();
+
+		for (int i : nums) {
+			if (mymap.get(i) == null) {
+				mymap.put(i, true);
+			} else {
+				duplicates.add(i);
+			}
+
+		}
+		return duplicates;
+
+	}
+
+	public Character firstNonRepeatingChar(String string) {
+		Map<Character, Integer> charCounts = new HashMap<>();
+
+		for (int i = 0; i < string.length(); i++) {
+			char c = string.charAt(i);
+			charCounts.put(c, charCounts.getOrDefault(c, 0) + 1);
+		}
+
+		for (int i = 0; i < string.length(); i++) {
+			char c = string.charAt(i);
+			if (charCounts.get(c) == 1) {
+				return c;
+			}
+		}
+
+		return null;
+	}
+
+	public List<List<String>> groupAnagrams(String[] strings) {
+		Map<String, List<String>> anagramGroups = new HashMap<>();
+
+		for (String string : strings) {
+			char[] chars = string.toCharArray();
+			Arrays.sort(chars);
+			String canonical = new String(chars);
+
+			if (anagramGroups.containsKey(canonical)) {
+				anagramGroups.get(canonical).add(string);
+			} else {
+				List<String> group = new ArrayList<>();
+				group.add(string);
+				anagramGroups.put(canonical, group);
+			}
+		}
+		return new ArrayList<>(anagramGroups.values());
+
+	}
+
+	public int[] twoSum(int[] nums, int target) {
+		Map<Integer, Integer> numMap = new HashMap<>();
+
+		for (int i = 0; i < nums.length; i++) {
+			int num = nums[i];
+			int complement = target - num;
+
+			if (numMap.containsKey(complement)) {
+				return new int[] { numMap.get(complement), i };
+			}
+			numMap.put(num, i);
+		}
+		return new int[] {};
+
+	}
+
+	public static int[] subarraySum(int[] nums, int target) {
+		Map<Integer, Integer> sumIndex = new HashMap<>();
+		sumIndex.put(0, -1);
+		int currentSum = 0;
+
+		for (int i = 0; i < nums.length; i++) {
+			currentSum += nums[i];
+			if (sumIndex.containsKey(currentSum - target)) {
+				return new int[] { sumIndex.get(currentSum - target) + 1, i };
+			}
+			sumIndex.put(currentSum, i);
+		}
+
+		return new int[] {};
 	}
 
 	public void printTable() {

@@ -3,8 +3,10 @@ package HashTable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class MyHashTable {
 
@@ -172,6 +174,65 @@ public class MyHashTable {
 		}
 
 		return new int[] {};
+	}
+
+	public List<Integer> removeDuplicates(List<Integer> myList) {
+		Set<Integer> uniqueSet = new HashSet<>(myList);
+		return new ArrayList<>(uniqueSet);
+	}
+
+	public boolean hasUniqueChars(String string) {
+		Set<Character> charSet = new HashSet<>();
+
+		for (char ch : string.toCharArray()) {
+			if (charSet.contains(ch)) {
+				return false;
+			}
+			charSet.add(ch);
+		}
+
+		return true;
+	}
+
+	public List<int[]> findPairs(int[] arr1, int[] arr2, int target) {
+		Set<Integer> mySet = new HashSet<>();
+		List<int[]> pairs = new ArrayList<>();
+
+		for (int num : arr1) {
+			mySet.add(num);
+		}
+
+		for (int num : arr2) {
+			int complement = target - num;
+			if (mySet.contains(complement)) {
+				pairs.add(new int[] { complement, num });
+			}
+		}
+
+		return pairs;
+	}
+
+	public static int longestConsecutiveSequence(int[] nums) {
+		Set<Integer> numSet = new HashSet<>();
+		for (Integer num : nums)
+			numSet.add(num);
+
+		int longestStreak = 0;
+
+		for (Integer num : numSet) {
+			if (!numSet.contains(num - 1)) {
+				int currentNum = num;
+				int currentStreak = 1;
+
+				while (numSet.contains(currentNum + 1)) {
+					currentNum++;
+					currentStreak++;
+				}
+				longestStreak = Math.max(longestStreak, currentStreak);
+
+			}
+		}
+		return longestStreak;
 	}
 
 	public void printTable() {

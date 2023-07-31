@@ -70,6 +70,77 @@ public class MyBinarySearchTree {
 		return false;
 	}
 
+	public boolean rContains(int value) {
+		return rContains(root, value);
+	}
+
+	private boolean rContains(Node current, int value) {
+		if (current == null)
+			return false;
+		if (current.value == value)
+			return true;
+
+		if (value < current.value) {
+			return rContains(current.left, value);
+		} else {
+			return rContains(current.right, value);
+		}
+	}
+
+	public void rInsert(int value) {
+		if (root == null)
+			root = new Node(value);
+		rInsert(root, value);
+	}
+
+	private Node rInsert(Node current, int value) {
+		if (current == null)
+			return new Node(value);
+
+		if (value < current.value) {
+			current.left = rInsert(current.left, value);
+		} else if (value > current.value) {
+			current.right = rInsert(current.right, value);
+		}
+		return current;
+	}
+
+	private int minValue(Node current) {
+
+		while (current.left != null) {
+			current = current.left;
+		}
+		return current.value;
+	}
+
+	public void deleteNode(int value) {
+		deleteNode(root, value);
+	}
+
+	private Node deleteNode(Node currentNode, int value) {
+		if (currentNode == null)
+			return null;
+
+		if (value < currentNode.value) {
+			currentNode.left = deleteNode(currentNode.left, value);
+		} else if (value > currentNode.value) {
+			currentNode.right = deleteNode(currentNode.right, value);
+		} else {
+			if (currentNode.left == null && currentNode.right == null) {
+				return null;
+			} else if (currentNode.left == null) {
+				currentNode = currentNode.right;
+			} else if (currentNode.right == null) {
+				currentNode = currentNode.left;
+			} else {
+				int subTreeMin = minValue(currentNode.right);
+				currentNode.value = subTreeMin;
+				currentNode.right = deleteNode(currentNode.right, subTreeMin);
+			}
+		}
+		return currentNode;
+	}
+
 	public Node getRoot() {
 		return root;
 	}

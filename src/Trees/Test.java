@@ -8,9 +8,11 @@ public class Test {
 		tree.insert(25);
 		tree.insert(75);
 		tree.insert(65);
-		//System.out.println(tree.getRoot().getRight().getLeft().getValue());
+		// System.out.println(tree.getRoot().getRight().getLeft().getValue());
 		System.out.println(tree.getRoot().getValue());
-		System.out.println(tree.contains(65));
+		System.out.println(tree.rContains(65));
+		tree.deleteNode(65);
+		System.out.println(tree.rContains(65));
 
 	}
 

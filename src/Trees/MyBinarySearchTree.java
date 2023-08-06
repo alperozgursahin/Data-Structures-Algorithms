@@ -200,7 +200,7 @@ public class MyBinarySearchTree {
 		new Traverse(root);
 		return results;
 	}
-	
+
 	public ArrayList<Integer> DFSInOrder() {
 		ArrayList<Integer> results = new ArrayList<>();
 
@@ -214,12 +214,30 @@ public class MyBinarySearchTree {
 				if (currentNode.right != null) {
 					new Traverse(currentNode.right);
 				}
-				
+
 			}
 
 		}
 		new Traverse(root);
 		return results;
+	}
+
+	public int kthSmallest(int k) {
+		ArrayList<Integer> list = new ArrayList<>();
+
+		class Traversal {
+			Traversal(Node currentNode) {
+				if (currentNode.left != null) {
+					new Traversal(currentNode.left);
+				}
+				list.add(currentNode.value);
+				if (currentNode.right != null) {
+					new Traversal(currentNode.right);
+				}
+			}
+		}
+		new Traversal(root);
+		return list.get(k - 1);
 	}
 
 	public Node getRoot() {
